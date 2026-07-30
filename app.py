@@ -475,14 +475,15 @@ with tab3:
         c4.metric("Longitud media snippet", f"{df['snippet'].fillna('').str.len().mean():.0f} car.")
 
         st.markdown("#### Resultados por consulta")
+        vc_query = df["query"].value_counts().rename_axis("consulta").reset_index(name="conteo")
         fig1 = px.bar(
-            df["query"].value_counts().reset_index(names=["consulta", "conteo"]),
+            vc_query,
             x="consulta", y="conteo", title="Cantidad de resultados por consulta"
         )
         st.plotly_chart(fig1, use_container_width=True)
 
         st.markdown("#### Distribución de dominios (fuentes)")
-        top_dominios = df["dominio"].value_counts().head(15).reset_index(names=["dominio", "conteo"])
+        top_dominios = df["dominio"].value_counts().head(15).rename_axis("dominio").reset_index(name="conteo")
         fig2 = px.bar(top_dominios, x="conteo", y="dominio", orientation="h", title="Top dominios encontrados")
         st.plotly_chart(fig2, use_container_width=True)
 
